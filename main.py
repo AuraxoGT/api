@@ -31,5 +31,7 @@ def normalize_text():
 # Run the Flask app
 if __name__ == '__main__':
     # Use PORT environment variable if running on Render or Replit
+import os
+
     port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
