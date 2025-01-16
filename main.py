@@ -1,17 +1,19 @@
 from flask import Flask, request, jsonify
+import unicodedata
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "Hello, World!"
+def normalize_text(text):
+    # Normalize the text to NFKD form and filter out non-standard characters
+    normalized = unicodedata.normalize("NFKD", text)
+    return ''.join(c for c in normalized if c.isascii())
 
 @app.route('/normalize', methods=['POST'])
 def normalize():
     data = request.json
     if data and "text" in data:
         input_text = data["text"]
-        normalized_text = ''.join(c for c in input_text if c.isalnum() or c.isspace())
+        normalized_text = normalize_text(input_text)
         return jsonify({"normalized": normalized_text})
     else:
         return jsonify({"error": "Invalid input"}), 400
