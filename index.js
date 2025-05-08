@@ -16,9 +16,10 @@ app.get('/api/timestamp', (req, res) => {
     return res.status(400).json({ error: 'Invalid Date' });
   }
 
+  // Return the timestamp in seconds
   res.json({
     date: date.toISOString(),
-    timestamp: date.getTime()
+    timestamp: Math.floor(date.getTime() / 1000)  // Convert to seconds
   });
 });
 
